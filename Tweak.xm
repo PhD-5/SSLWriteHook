@@ -1,6 +1,6 @@
 #import <substrate.h>
 #import <Security/SecureTransport.h>
-
+#import "SocketClass.h"
 
 
 //Hook the SSLWrite()
@@ -23,7 +23,7 @@ static OSStatus replaced_SSLWrite(SSLContextRef context,
 //    NSLog(@"SSLWrite data:%@",ocStr);
     NSArray *infoArray = [ocStr componentsSeparatedByString:@"\r\n"];
 //    NSMutableDictionary *infoDict = [[NSMutableDictionary alloc] init];
-    
+    SocketClass *socket = [[SocketClass alloc] init];
     int count = infoArray.count;
     for(int i=0;i<count;i++){
         NSString *info = [infoArray objectAtIndex:i];
@@ -34,16 +34,22 @@ static OSStatus replaced_SSLWrite(SSLContextRef context,
         NSRange range1 = [info rangeOfString:@"/URLConnection.html"];
         if(range1.location != NSNotFound){
             NSLog(@"%@ SSLWrite :NSURLConnection has MITM",bundleID);
+            
+            [socket SendSocket:@"SSLWrite :NSURLConnection has MITM"];
         }
         
         NSRange range2 = [info rangeOfString:@"/UIWebView.html"];
         if(range2.location != NSNotFound){
             NSLog(@"%@ SSLWrite :UIWebView has MITM",bundleID);
+            
+            [socket SendSocket:@"SSLWrite :UIWebView has MITM"];
         }
         
         NSRange range3 = [info rangeOfString:@"/URLSession.html"];
         if(range3.location != NSNotFound){
             NSLog(@"%@ SSLWrite :NSURLSession has MITM",bundleID);
+            
+            [socket SendSocket:@"SSLWrite :NSURLSession has MITM"];
         }
     }
 //    NSLog(@"SSLWrite data:%s",(char *)data);
