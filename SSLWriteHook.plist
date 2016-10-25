@@ -1,1 +1,8 @@
-{ Filter = { Bundles = ( "com.sgccGdt.PockPower" ); }; }
+{
+	Filter = {
+		Bundles = (
+			"com.sgccGdt.PockPower",
+			"com.apple.AppStore",
+		);
+	};
+}
